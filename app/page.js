@@ -1,14 +1,14 @@
-'use client' // Component runs on the client side
+'use client';
 
-import { useState, useEffect } from 'react'; // React hooks for managing state and side effects
-import { firestore } from '@/firebase'; // Firebase Firestore instance
-import { Box, Button, Modal, Stack, TextField, Typography, Card, CardContent, CardActions, Grid, IconButton } from "@mui/material"; // Material-UI components
-import { styled } from '@mui/system'; // Material-UI styling
-import EditIcon from '@mui/icons-material/Edit'; // Material-UI icon for edit
-import DeleteIcon from '@mui/icons-material/Delete'; // Material-UI icon for delete
-import AddIcon from '@mui/icons-material/Add'; // Material-UI icon for add
-import SearchIcon from '@mui/icons-material/Search'; // Material-UI icon for search
-import { collection, getDocs, query, doc, getDoc, setDoc, deleteDoc } from "firebase/firestore"; // Firestore functions for database operations
+import { useState, useEffect } from 'react';
+import { firestore } from '@/firebase';
+import { Box, Button, Modal, Stack, TextField, Typography, Card, CardContent, CardActions, Grid, IconButton, } from '@mui/material';
+import { styled } from '@mui/system';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import AddIcon from '@mui/icons-material/Add';
+import SearchIcon from '@mui/icons-material/Search';
+import { collection, getDocs, query, doc, getDoc, setDoc, deleteDoc } from 'firebase/firestore';
 
 // Styled components using Material-UI's styled function
 const Container = styled(Box)({
@@ -22,10 +22,44 @@ const Container = styled(Box)({
   backgroundColor: '#f5f5f5', // Light grey background color
 });
 
-const InventoryTitle = styled(Typography)({
-  marginBottom: 16, // Margin bottom of 16px
-  fontWeight: 600, // Font weight of 600 (bold)
-});
+const InventoryTitle = () => (
+  <Box
+    sx={{
+      textAlign: 'center', // Center the content
+      display: 'flex', // Use flexbox for layout
+      flexDirection: 'column', // Stack the logo and text vertically
+      alignItems: 'center', // Center horizontally
+      marginBottom: 4, // Space below the title
+    }}
+  >
+    <img
+      src="/logo.webp"
+      alt="Storify Logo"
+      style={{ width: 150, height: 150, marginBottom: '5px' }}
+    />
+    <svg
+      width="500"
+      height="100"
+      viewBox="0 0 400 100"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <text
+        x="50%"
+        y="50%"
+        dominantBaseline="middle"
+        textAnchor="middle"
+        fontSize="90"
+        fontWeight="bold"
+        fill="white"
+        stroke="#162E3F"
+        strokeWidth="10"
+        paintOrder="stroke fill"
+      >
+        Storify
+      </text>
+    </svg>
+  </Box>
+);
 
 const AddButton = styled(Button)({
   marginBottom: 16, // Margin bottom of 16px
@@ -130,9 +164,7 @@ export default function Home() {
 
   return (
     <Container>
-      <InventoryTitle variant="h4" gutterBottom>
-        Pantry Inventory
-      </InventoryTitle>
+      <InventoryTitle />
       <AddButton
         variant="contained"
         color="primary"
@@ -147,14 +179,14 @@ export default function Home() {
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
         InputProps={{
-          startAdornment: (
-            <SearchIcon position="start" />
-          ),
+          startAdornment: <SearchIcon position="start" />,
         }}
       />
       <Grid container spacing={2}>
         {inventory
-          .filter(item => item.name.toLowerCase().includes(searchTerm.toLowerCase())) // Filter items based on search term
+          .filter((item) =>
+            item.name.toLowerCase().includes(searchTerm.toLowerCase())
+          ) // Filter items based on search term
           .map(({ name, quantity }) => (
             <Grid item xs={12} sm={6} md={4} key={name}>
               <InventoryCard>
@@ -183,14 +215,14 @@ export default function Home() {
           <Typography variant="h6">{updateMode ? 'Update Item' : 'Add Item'}</Typography>
           <Stack width="100%" direction="column" spacing={2}>
             <TextField
-              variant='outlined'
+              variant="outlined"
               fullWidth
               label="Item Name"
               value={itemName}
               onChange={(e) => setItemName(e.target.value)}
             />
             <TextField
-              variant='outlined'
+              variant="outlined"
               fullWidth
               label="Quantity"
               type="number"
@@ -198,7 +230,7 @@ export default function Home() {
               onChange={(e) => setItemQuantity(e.target.value)}
             />
             <Button
-              variant='contained'
+              variant="contained"
               color="primary"
               onClick={() => {
                 addItem(itemName, itemQuantity); // Add or update item
