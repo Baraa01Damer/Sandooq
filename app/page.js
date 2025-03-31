@@ -55,7 +55,7 @@ const InventoryTitle = () => (
         strokeWidth="10"
         paintOrder="stroke fill"
       >
-        Storify
+        Sandooq
       </text>
     </svg>
   </Box>
